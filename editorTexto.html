@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Bloco de Notas</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    #editor {
+      width: 100%;
+      height: 70vh;
+      padding: 15px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      resize: none;
+      box-sizing: border-box;
+      font-family: monospace;
+    }
+
+    .buttons {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    button {
+      margin: 0 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      background-color: #007BFF;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📝 Bloco de Notas</h1>
+  
+  <textarea id="editor" placeholder="Digite aqui..."></textarea>
+
+  <div class="buttons">
+    <button onclick="salvar()">Salvar</button>
+    <button onclick="limpar()">Limpar</button>
+  </div>
+
+  <script>
+    // Salvar no localStorage
+    function salvar() {
+      const texto = document.getElementById('editor').value;
+      localStorage.setItem('blocoNotas', texto);
+      alert('Texto salvo localmente!');
+    }
+
+    // Baixar como arquivo .txt
+    function baixar() {
+      const texto = document.getElementById('editor').value;
+      const blob = new Blob([texto], { type: 'text/plain' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'bloco-de-notas.txt';
+      link.click();
+    }
+
+    // Limpar conteúdo
+    function limpar() {
+      if (confirm('Tem certeza que deseja apagar o conteúdo?')) {
+        document.getElementById('editor').value = '';
+        localStorage.removeItem('blocoNotas');
+      }
+    }
+
+    // Carregar texto salvo (se existir)
+    window.onload = function() {
+      const salvo = localStorage.getItem('blocoNotas');
+      if (salvo) {
+        document.getElementById('editor').value = salvo;
+      }
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Paint Web</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #f0f0f0;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    .toolbar {
+      margin-bottom: 10px;
+    }
+
+    canvas {
+      border: 2px solid #333;
+      background: white;
+      cursor: crosshair;
+    }
+  </style>
+</head>
+<body>
+  <h1>Paint🎨</h1>
+  <div class="toolbar">
+    <input type="color" id="colorPicker" value="#000000" />
+    <input type="range" id="brushSize" min="1" max="50" value="5" />
+    <button onclick="clearCanvas()">Limpar</button>
+  </div>
+  <canvas id="paintCanvas" width="800" height="500"></canvas>
+
+  <script>
+    const canvas = document.getElementById('paintCanvas');
+    const ctx = canvas.getContext('2d');
+    const colorPicker = document.getElementById('colorPicker');
+    const brushSize = document.getElementById('brushSize');
+    
+    let painting = false;
+    
+    function startPosition(e) {
+      painting = true;
+      draw(e);
+    }
+    
+    function endPosition() {
+      painting = false;
+      ctx.beginPath(); // inicia novo caminho para não conectar os traços
+    }
+    
+    function draw(e) {
+      if (!painting) return;
+    
+      ctx.lineWidth = brushSize.value;
+      ctx.lineCap = 'round';
+      ctx.strokeStyle = colorPicker.value;
+    
+      ctx.lineTo(e.offsetX, e.offsetY);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(e.offsetX, e.offsetY);
+    }
+    
+    function clearCanvas() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+    
+    canvas.addEventListener('mousedown', startPosition);
+    canvas.addEventListener('mouseup', endPosition);
+    canvas.addEventListener('mouseout', endPosition);
+    canvas.addEventListener('mousemove', draw);
+    
+  </script>
+</body>
+</html>
