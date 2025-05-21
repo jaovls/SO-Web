@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Player de Música</title>
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+  background-color: #111;
+  color: white;
+  text-align: center;
+  padding: 50px;
+}
+
+.player {
+  background: #222;
+  padding: 20px;
+  border-radius: 12px;
+  display: inline-block;
+  box-shadow: 0 0 20px #444;
+}
+
+.controls button {
+  font-size: 18px;
+  padding: 10px 20px;
+  margin: 10px;
+  cursor: pointer;
+  background: #444;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  transition: background 0.3s;
+}
+
+.controls button:hover {
+  background: #666;
+}
+
+  </style>
+</head>
+<body>
+
+    <div class="player">
+        <h2>🎵 Tocando Agora</h2>
+        <audio id="audio" src="Memories (feat. Kid Cudi) (Extended).mp3"></audio>
+        
+        <div class="controls">
+          <button onclick="playMusic()">▶️ Play</button>
+          <button onclick="pauseMusic()">⏸️ Pause</button>
+          <button onclick="stopMusic()">⏹️ Stop</button>
+        </div>
+      
+        <div class="volume-control">
+          <label for="volume">🔊 Volume</label>
+          <input type="range" id="volume" min="0" max="1" step="0.01" value="1" onchange="changeVolume(this.value)">
+        </div>
+      </div>
+
+      <script>
+        const audio = document.getElementById("audio");
+      
+        function playMusic() {
+          audio.play();
+        }
+      
+        function pauseMusic() {
+          audio.pause();
+        }
+      
+        function stopMusic() {
+          audio.pause();
+          audio.currentTime = 0;
+        }
+      
+        function changeVolume(value) {
+          audio.volume = value;
+        }
+      </script>
+      
+</body>
+</html>

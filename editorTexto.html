@@ -51,48 +51,36 @@
 <body>
 
   <h1>📝 Bloco de Notas</h1>
-  
-  <textarea id="editor" placeholder="Digite aqui..."></textarea>
 
-  <div class="buttons">
-    <button onclick="salvar()">Salvar</button>
-    <button onclick="limpar()">Limpar</button>
-  </div>
+<input type="text" id="nomeArquivo" placeholder="Nome do arquivo" />
+<textarea id="editor" placeholder="Digite aqui..."></textarea>
 
-  <script>
-    // Salvar no localStorage
-    function salvar() {
-      const texto = document.getElementById('editor').value;
-      localStorage.setItem('blocoNotas', texto);
-      alert('Texto salvo localmente!');
+<div class="buttons">
+  <button onclick="salvar()">Salvar</button>
+  <button onclick="limpar()">Limpar</button>
+</div>
+
+<script>
+  function salvar() {
+    const nome = document.getElementById('nomeArquivo').value.trim();
+    const texto = document.getElementById('editor').value;
+
+    if (!nome) {
+      alert('Digite um nome para o arquivo!');
+      return;
     }
 
-    // Baixar como arquivo .txt
-    function baixar() {
-      const texto = document.getElementById('editor').value;
-      const blob = new Blob([texto], { type: 'text/plain' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = 'bloco-de-notas.txt';
-      link.click();
-    }
+    localStorage.setItem(`arquivo-${nome}`, texto);
+    alert(`Arquivo "${nome}" salvo!`);
+  }
 
-    // Limpar conteúdo
-    function limpar() {
-      if (confirm('Tem certeza que deseja apagar o conteúdo?')) {
-        document.getElementById('editor').value = '';
-        localStorage.removeItem('blocoNotas');
-      }
+  function limpar() {
+    if (confirm('Tem certeza que deseja apagar o conteúdo?')) {
+      document.getElementById('editor').value = '';
     }
+  }
+</script>
 
-    // Carregar texto salvo (se existir)
-    window.onload = function() {
-      const salvo = localStorage.getItem('blocoNotas');
-      if (salvo) {
-        document.getElementById('editor').value = salvo;
-      }
-    }
-  </script>
 
 </body>
 </html>

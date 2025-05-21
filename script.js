@@ -38,10 +38,26 @@ function abrirArquivos(){
     )
 }
 
+function abrirMusica(){
+    window.open(
+        "playerMusica.html",
+        "popupWindow",
+        "width=1000,height=700,resizable=yes,scrollbars=yes,staus=yes"
+    )
+}
+
+function abrirLixeira(){
+    window.open(
+        "lixeira.html",
+        "popupWindow",
+        "width=1000,height=700,resizable=yes,scrollbars=yes,staus=yes"
+    )
+}
+
 function mostrarDataHora() {
   const agora = new Date();
   document.getElementById('horas-datas').textContent = agora.toLocaleString();
 }
 
 setInterval(mostrarDataHora, 1000);
-mostrarDataHora(); // mostra na hora que carrega a página
+mostrarDataHora(); // mostra na hora que carrega 

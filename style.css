@@ -19,7 +19,7 @@ body{
     margin-left: 20px;
     display: flex;
     flex-direction: column;
-    
+    user-select: none;
 }
 
 .areaTrabalho a{
@@ -79,6 +79,18 @@ body{
 }
 
 .arquivos img{
+    height: 50px;
+    width: 50px;
+    margin-top: 50px;  
+}
+
+.playerMusica img{
+    height: 50px;
+    width: 50px;
+    margin-top: 50px;  
+}
+
+.lixeira img{
     height: 50px;
     width: 50px;
     margin-top: 50px;  

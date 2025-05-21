@@ -1,23 +1,123 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        h1{
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            font-family: Arial, Helvetica, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100dvh;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>📁 Meus Arquivos</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .arquivo {
+      background: white;
+      padding: 10px;
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .arquivo:hover {
+      background-color: #eef;
+    }
+
+    .botoes {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-size: 18px;
+    }
+
+    .btn:hover {
+      color: red;
+    }
+
+    .lixeira-link {
+      display: block;
+      margin: 20px auto;
+      text-align: center;
+      font-size: 18px;
+    }
+  </style>
 </head>
 <body>
-    <h1>Explorador de árquivos</h1>
+
+  <h1>📁 Meus Arquivos</h1>
+  <div id="listaArquivos"></div>
+
+  <script>
+    function listarArquivos() {
+      const lista = document.getElementById('listaArquivos');
+      lista.innerHTML = '';
+
+      for (let i = 0; i < localStorage.length; i++) {
+        const chave = localStorage.key(i);
+        if (chave.startsWith('arquivo-')) {
+          const nome = chave.replace('arquivo-', '');
+          
+          const div = document.createElement('div');
+          div.className = 'arquivo';
+          
+          const spanNome = document.createElement('span');
+          spanNome.textContent = nome;
+          spanNome.style.cursor = 'pointer';
+          spanNome.onclick = () => abrirArquivo(chave);
+
+          const botoes = document.createElement('div');
+          botoes.className = 'botoes';
+
+          const btnExcluir = document.createElement('button');
+          btnExcluir.className = 'btn';
+          btnExcluir.innerHTML = '🗑️';
+          btnExcluir.title = 'Mover para a lixeira';
+          btnExcluir.onclick = () => moverParaLixeira(chave);
+
+          botoes.appendChild(btnExcluir);
+          div.appendChild(spanNome);
+          div.appendChild(botoes);
+          lista.appendChild(div);
+        }
+      }
+
+      if (lista.innerHTML === '') {
+        lista.innerHTML = '<p>Nenhum arquivo salvo.</p>';
+      }
+    }
+
+    function abrirArquivo(chave) {
+      const conteudo = localStorage.getItem(chave);
+      const nome = chave.replace('arquivo-', '');
+      const novaJanela = window.open('', '_blank', 'width=800,height=600');
+      novaJanela.document.write(`
+        <h1>${nome}</h1>
+        <pre style="white-space: pre-wrap; font-family: monospace;">${conteudo}</pre>
+      `);
+    }
+
+    function moverParaLixeira(chave) {
+      const nome = chave.replace('arquivo-', '');
+      if (confirm(`Deseja mover o arquivo "${nome}" para a lixeira?`)) {
+        const conteudo = localStorage.getItem(chave);
+        localStorage.setItem(`lixeira-${nome}`, conteudo);
+        localStorage.removeItem(chave);
+        listarArquivos();
+      }
+    }
+
+    listarArquivos();
+  </script>
+
 </body>
 </html>
