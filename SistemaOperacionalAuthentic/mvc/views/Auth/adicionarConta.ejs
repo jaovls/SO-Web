@@ -1,0 +1,57 @@
+<!-- views/Auth/adicionarConta.ejs -->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar Conta - Axylon OP</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.css">
+    <style>
+        .form-container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .error-message {
+            color: #db2828;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="ui container">
+        <div class="form-container">
+            <h2 class="ui header">Adicionar Nova Conta</h2>
+            
+            <% if (typeof erro !== 'undefined') { %>
+                <div class="error-message">
+                    <i class="exclamation triangle icon"></i>
+                    <%= erro %>
+                </div>
+            <% } %>
+
+            <form class="ui form" method="POST" action="/adicionar-conta">
+                <div class="field">
+                    <label>Nome</label>
+                    <input type="text" name="nome" required 
+                           value="<%= typeof dados !== 'undefined' ? dados.nome : '' %>">
+                </div>
+                <div class="field">
+                    <label>Email</label>
+                    <input type="email" name="email" required
+                           value="<%= typeof dados !== 'undefined' ? dados.email : '' %>">
+                </div>
+                <div class="field">
+                    <label>Senha</label>
+                    <input type="password" name="senha" required>
+                </div>
+                <button class="ui primary button" type="submit">Criar Conta</button>
+                <a href="/login" class="ui button">Voltar</a>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

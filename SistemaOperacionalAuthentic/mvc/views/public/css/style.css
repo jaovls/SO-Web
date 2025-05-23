@@ -1,0 +1,97 @@
+*{
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+}
+
+body{
+    margin: 0;
+    height: 100vh;
+    background-image: url('../imgs/at.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.areaTrabalho{
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+    user-select: none;
+}
+
+.areaTrabalho a{
+    color: white;
+    text-decoration: none;
+
+}   
+
+.navegador img{
+    margin-top: 20px;
+    height: 50px;
+    width: 50px;
+    display: flex;
+}
+
+.editorTexto img{
+    height: 50px;
+    width: 50px;
+    margin-top: 50px;
+}
+
+.navegador{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.menu{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border: 1px solid white ;
+    backdrop-filter: blur(20px);
+    height: 45px;
+}
+
+
+.menu #horas-datas{
+    width: 100px;
+    color: white;
+    display: flex;
+    align-items: end;
+}
+
+.game img{
+    height: 50px;
+    width: 50px;  
+}
+
+.paint img{
+    height: 50px;
+    width: 50px;
+    margin-top: 50px;  
+}
+
+.arquivos img{
+    height: 50px;
+    width: 50px;
+    margin-top: 50px;  
+}
+
+.playerMusica img{
+    height: 50px;
+    width: 50px;
+    margin-top: 50px;  
+}
+
+.lixeira img{
+    height: 50px;
+    width: 50px;
+    margin-top: 50px;  
+}

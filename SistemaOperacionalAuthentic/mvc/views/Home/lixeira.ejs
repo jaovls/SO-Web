@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>🗑️ Lixeira</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fff0f0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #b00;
+    }
+
+    .arquivo {
+      background: #fff5f5;
+      border: 1px solid #d99;
+      padding: 10px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .botoes {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-size: 18px;
+    }
+
+    .btn:hover {
+      color: darkred;
+    }
+
+    .voltar {
+      display: block;
+      text-align: center;
+      margin: 20px auto;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🗑️ Lixeira</h1>
+  <div id="listaLixeira"></div>
+
+  <script>
+    function listarLixeira() {
+      const lista = document.getElementById('listaLixeira');
+      lista.innerHTML = '';
+
+      for (let i = 0; i < localStorage.length; i++) {
+        const chave = localStorage.key(i);
+        if (chave.startsWith('lixeira-')) {
+          const nome = chave.replace('lixeira-', '');
+
+          const div = document.createElement('div');
+          div.className = 'arquivo';
+
+          const spanNome = document.createElement('span');
+          spanNome.textContent = nome;
+          spanNome.style.cursor = 'pointer';
+          spanNome.onclick = () => abrirArquivo(chave);
+
+          const botoes = document.createElement('div');
+          botoes.className = 'botoes';
+
+          const btnRestaurar = document.createElement('button');
+          btnRestaurar.className = 'btn';
+          btnRestaurar.title = 'Restaurar';
+          btnRestaurar.innerHTML = '↩️';
+          btnRestaurar.onclick = () => restaurarArquivo(chave);
+
+          const btnExcluirDefinitivo = document.createElement('button');
+          btnExcluirDefinitivo.className = 'btn';
+          btnExcluirDefinitivo.title = 'Excluir definitivamente';
+          btnExcluirDefinitivo.innerHTML = '❌';
+          btnExcluirDefinitivo.onclick = () => excluirDefinitivamente(chave);
+
+          botoes.appendChild(btnRestaurar);
+          botoes.appendChild(btnExcluirDefinitivo);
+
+          div.appendChild(spanNome);
+          div.appendChild(botoes);
+          lista.appendChild(div);
+        }
+      }
+
+      if (lista.innerHTML === '') {
+        lista.innerHTML = '<p>A lixeira está vazia.</p>';
+      }
+    }
+
+    function abrirArquivo(chave) {
+      const conteudo = localStorage.getItem(chave);
+      const nome = chave.replace('lixeira-', '');
+      const novaJanela = window.open('', '_blank', 'width=800,height=600');
+      novaJanela.document.write(`
+        <h1>${nome}</h1>
+        <pre style="white-space: pre-wrap; font-family: monospace;">${conteudo}</pre>
+      `);
+    }
+
+    function restaurarArquivo(chave) {
+      const nome = chave.replace('lixeira-', '');
+      const conteudo = localStorage.getItem(chave);
+      localStorage.setItem(`arquivo-${nome}`, conteudo);
+      localStorage.removeItem(chave);
+      listarLixeira();
+    }
+
+    function excluirDefinitivamente(chave) {
+      const nome = chave.replace('lixeira-', '');
+      if (confirm(`Excluir permanentemente o arquivo "${nome}"?`)) {
+        localStorage.removeItem(chave);
+        listarLixeira();
+      }
+    }
+
+    listarLixeira();
+  </script>
+
+</body>
+</html>

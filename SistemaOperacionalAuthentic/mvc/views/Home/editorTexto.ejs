@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Bloco de Notas</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    #editor {
+      width: 100%;
+      height: 70vh;
+      padding: 15px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      resize: none;
+      box-sizing: border-box;
+      font-family: monospace;
+    }
+
+    .buttons {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    button {
+      margin: 0 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      background-color: #007BFF;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📝 Bloco de Notas</h1>
+
+<input type="text" id="nomeArquivo" placeholder="Nome do arquivo" />
+<textarea id="editor" placeholder="Digite aqui..."></textarea>
+
+<div class="buttons">
+  <button onclick="salvar()">Salvar</button>
+  <button onclick="limpar()">Limpar</button>
+</div>
+
+<script>
+  function salvar() {
+    const nome = document.getElementById('nomeArquivo').value.trim();
+    const texto = document.getElementById('editor').value;
+
+    if (!nome) {
+      alert('Digite um nome para o arquivo!');
+      return;
+    }
+
+    localStorage.setItem(`arquivo-${nome}`, texto);
+    alert(`Arquivo "${nome}" salvo!`);
+  }
+
+  function limpar() {
+    if (confirm('Tem certeza que deseja apagar o conteúdo?')) {
+      document.getElementById('editor').value = '';
+    }
+  }
+</script>
+
+
+</body>
+</html>

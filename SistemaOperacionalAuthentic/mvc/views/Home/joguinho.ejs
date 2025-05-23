@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Jogo da Minhoca Básico</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin-top: 20px;
+  }
+  #game {
+    position: relative;
+    margin: 20px auto;
+    width: 400px;
+    height: 400px;
+    background-color: #eee;
+    border: 2px solid #333;
+    display: grid;
+    grid-template-columns: repeat(20, 20px);
+    grid-template-rows: repeat(20, 20px);
+  }
+  .cell {
+    width: 20px;
+    height: 20px;
+  }
+  .snake {
+    background-color: green;
+  }
+  .food {
+    background-color: red;
+  }
+  #score {
+    font-size: 20px;
+    margin-top: 10px;
+  }
+  button {
+    margin-top: 15px;
+    padding: 8px 16px;
+    font-size: 16px;
+  }
+</style>
+</head>
+<body>
+
+<h1>Jogo da Minhoca Básico</h1>
+<div id="game"></div>
+<div id="score">Pontuação: 0</div>
+<button onclick="startGame()">Reiniciar</button>
+
+<script>
+  const rows = 20;
+  const cols = 20;
+  let snake = [];
+  let direction = 'right';
+  let food = null;
+  let score = 0;
+  let gameInterval = null;
+  const gameSpeed = 150; // ms
+
+  const gameElem = document.getElementById('game');
+  const scoreElem = document.getElementById('score');
+
+  function createGrid() {
+    gameElem.innerHTML = '';
+    for(let i = 0; i < rows * cols; i++) {
+      const cell = document.createElement('div');
+      cell.classList.add('cell');
+      gameElem.appendChild(cell);
+    }
+  }
+
+  function getCell(row, col) {
+    return gameElem.children[row * cols + col];
+  }
+
+  function placeFood() {
+    let emptyCells = [];
+    for(let r = 0; r < rows; r++) {
+      for(let c = 0; c < cols; c++) {
+        if(!snake.some(segment => segment.row === r && segment.col === c)) {
+          emptyCells.push({row: r, col: c});
+        }
+      }
+    }
+    if(emptyCells.length === 0) return null;
+    const index = Math.floor(Math.random() * emptyCells.length);
+    food = emptyCells[index];
+  }
+
+  function draw() {
+    // limpa o grid
+    for(let i = 0; i < rows * cols; i++) {
+      gameElem.children[i].className = 'cell';
+    }
+    // desenha a comida
+    if(food) {
+      getCell(food.row, food.col).classList.add('food');
+    }
+    // desenha a minhoca
+    snake.forEach(segment => {
+      getCell(segment.row, segment.col).classList.add('snake');
+    });
+  }
+
+  function moveSnake() {
+    let head = {...snake[0]};
+    switch(direction) {
+      case 'up': head.row--; break;
+      case 'down': head.row++; break;
+      case 'left': head.col--; break;
+      case 'right': head.col++; break;
+    }
+
+    // Verifica colisão com paredes
+    if(head.row < 0 || head.row >= rows || head.col < 0 || head.col >= cols) {
+      gameOver();
+      return;
+    }
+
+    // Verifica colisão com o corpo
+    if(snake.some(segment => segment.row === head.row && segment.col === head.col)) {
+      gameOver();
+      return;
+    }
+
+    snake.unshift(head);
+
+    // Verifica se comeu a comida
+    if(food && head.row === food.row && head.col === food.col) {
+      score++;
+      scoreElem.textContent = 'Pontuação: ' + score;
+      placeFood();
+    } else {
+      snake.pop();
+    }
+
+    draw();
+  }
+
+  function gameOver() {
+    clearInterval(gameInterval);
+    alert('Game Over! Sua pontuação foi: ' + score);
+  }
+
+  function startGame() {
+    clearInterval(gameInterval);
+    score = 0;
+    scoreElem.textContent = 'Pontuação: 0';
+    direction = 'right';
+    snake = [
+      {row: 10, col: 8},
+      {row: 10, col: 7},
+      {row: 10, col: 6},
+    ];
+    createGrid();
+    placeFood();
+    draw();
+    gameInterval = setInterval(moveSnake, gameSpeed);
+  }
+
+  window.addEventListener('keydown', e => {
+    switch(e.key) {
+      case 'ArrowUp':
+        if(direction !== 'down') direction = 'up';
+        break;
+      case 'ArrowDown':
+        if(direction !== 'up') direction = 'down';
+        break;
+      case 'ArrowLeft':
+        if(direction !== 'right') direction = 'left';
+        break;
+      case 'ArrowRight':
+        if(direction !== 'left') direction = 'right';
+        break;
+    }
+  });
+
+  startGame();
+</script>
+
+</body>
+</html>
